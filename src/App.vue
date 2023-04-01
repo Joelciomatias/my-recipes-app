@@ -27,31 +27,19 @@
 <script>
 
 import RecipeList from './components/RecipeList.vue';
+import {fetchRecipes, createRecipe} from './services/recipes.js';
 
 export default {
   components: {
     RecipeList,
   },
+  async created(){
+    this.fetchRecipes()
+    
+  },
   data() {
     return {
-      recipes: [
-        {
-          id: 1,
-          title: "Macarrão com queijo",
-          ingredients: "macarrão, queijo, leite, manteiga",
-          directions: "Cozinhe o macarrão, misture com o queijo derretido, adicione o leite e a manteiga e misture tudo",
-          notes: "Rápido e fácil de fazer",
-          image: "https://www.example.com/mac-cheese.jpg"
-        },
-        {
-          id: 2,
-          title: "Bolo de cenoura",
-          ingredients: "cenoura, açúcar, farinha, óleo, ovos",
-          directions: "Bata os ovos, misture com os outros ingredientes, asse em uma forma",
-          notes: "Delicioso com cobertura de cream cheese",
-          image: "https://www.example.com/carrot-cake.jpg"
-        }
-      ],
+      recipes: [],
       showNewRecipe: false,
       newRecipe: {
         title: '',
@@ -62,6 +50,24 @@ export default {
     };
   },
   methods: {
+    fetchRecipes(){
+
+      fetchRecipes().then((response) => {
+        console.log(response.data)
+        this.recipes = response.data
+      })
+      .catch(function (error) {
+          console.log(error);
+      });
+    },
+    createRecipe(recipe){
+      createRecipe(recipe).then((response) => {
+        console.log(response)
+        this.fetchRecipes()
+      }).catch(function (error) {
+          console.log(error);
+      });
+    },
     saveNewRecipe() {
       const newRecipe = {
         id: this.recipes.length + 1,
@@ -71,7 +77,8 @@ export default {
         notes: this.newRecipe.notes,
         image: "https://www.example.com/default-image.jpg"
       };
-      this.recipes.push(newRecipe);
+      createRecipe(newRecipe)
+      // this.recipes.push(newRecipe);
       this.closeNewRecipeModal();
     },
     closeNewRecipeModal() {

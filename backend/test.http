@@ -12,7 +12,5 @@ content-type: application/json
     "notes": "Rápido e fácil de fazer",
     "image": "https://www.example.com/mac-cheese.jpg"
 }
-
 ####
-
 GET {{url}}/recipes

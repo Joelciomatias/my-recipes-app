@@ -1,4 +1,5 @@
-import pymongo'
+from flask_cors import CORS
+import pymongo
 from flask import Flask, request, jsonify
 
 client = pymongo.MongoClient('localhost', 27017)
@@ -6,6 +7,7 @@ db = client['recipes-app']
 collection = db['recipe']
 
 app = Flask(__name__)
+CORS(app)
 
 # Define uma rota para o método GET
 @app.route('/recipes', methods=['GET'])
@@ -20,8 +22,13 @@ def get_data():
 @app.route('/recipes', methods=['POST'])
 def data():
     data = request.get_json()
-    collection.insert_one(data)
-    return jsonify({'status': 'success'})
+    res = collection.insert_one(data)
+    data['_id'] = str(res.inserted_id)
+    print(data)
+    return jsonify({
+        'status': 'success',
+        'data': data
+    })
 
 
 if __name__ == '__main__':
