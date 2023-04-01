@@ -1,0 +1,18 @@
+
+
+@url = http://127.0.0.1:5000
+####
+POST {{url}}/recipes
+content-type: application/json
+
+{
+    "title": "Macarrão com queijo",
+    "ingredients": "macarrão, queijo, leite, manteiga",
+    "directions": "Cozinhe o macarrão, misture com o queijo derretido, adicione o leite e a manteiga e misture tudo",
+    "notes": "Rápido e fácil de fazer",
+    "image": "https://www.example.com/mac-cheese.jpg"
+}
+
+####
+
+GET {{url}}/recipes
